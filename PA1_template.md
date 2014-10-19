@@ -246,6 +246,6 @@ xyplot(steps~interval|day,data=new_interval_steps,type='l',xlab='interval',main=
 
 ![](./PA1_template_files/figure-html/panel_plot-1.png) 
 
-On weekdays, there si a noticeable peak in the morning (presumably when the person goes to work). On weekends, walking activity is more evenly distributed throughout the day (and starts a little later).
+On weekdays, there is a noticeable peak in the morning (presumably when the person goes to work). On weekends, walking activity is more evenly distributed throughout the day (and starts a little later).
 
 
