@@ -139,3 +139,31 @@ Because we have replaced missing values with means, the median has shifted a lit
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+*For this part the weekdays() function may be of some help here. Use the dataset with the filled-in missing values for this part.*
+
+### 1. Weekday v weekend 
+
+*Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.*
+
+```{r new_factor}
+weekend = c('Saturday','Sunday')
+newActivity$day <- ifelse(weekdays(as.POSIXct(newActivity$date)) %in% weekend, "weekend", "weekday")
+head(newActivity)                                                                              
+newActivity[1800:1806,]
+```
+
+
+### 2. Panel plot
+
+*Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).*
+
+```{r panel_plot}
+new_interval_steps <- aggregate(steps ~ interval + day, data=newActivity, FUN=mean, na.rm=TRUE)
+library(lattice)
+xyplot(steps~interval|day,data=new_interval_steps,type='l',xlab='interval',main="Average steps per 5-min interval weekdays/weekend",layout=c(1,2))
+```
+
+On weekdays, there si a noticeable peak in the morning (presumably when the person goes to work). On weekends, walking activity is more evenly distributed throughout the day (and starts a little later).
+
+
