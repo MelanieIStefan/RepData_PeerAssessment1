@@ -30,7 +30,7 @@ For this part of the assignment, ignore the missing values.
 
 ### 1. Make a histogram of the total number of steps taken each day
 
-```{r total_steps_day}
+```{r total_steps_day, dev="png"}
 steps_per_day <- tapply(activity$steps, activity$date, sum)
 hist(steps_per_day,breaks = 10,main="Steps taken per day", xlab="Steps per day")
 ```
@@ -164,6 +164,6 @@ library(lattice)
 xyplot(steps~interval|day,data=new_interval_steps,type='l',xlab='interval',main="Average steps per 5-min interval weekdays/weekend",layout=c(1,2))
 ```
 
-On weekdays, there si a noticeable peak in the morning (presumably when the person goes to work). On weekends, walking activity is more evenly distributed throughout the day (and starts a little later).
+On weekdays, there is a noticeable peak in the morning (presumably when the person goes to work). On weekends, walking activity is more evenly distributed throughout the day (and starts a little later).
 
 
