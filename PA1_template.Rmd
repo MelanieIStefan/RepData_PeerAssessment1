@@ -97,8 +97,7 @@ sum(is.na(activity$steps))
 ### 2. Missing values strategy 
 *Devise a strategy for filling in all of the missing values in the dataset.*
 
-If a missing value is found, fill in mean for that 5-minute interval. (Expect this to be the reasonably accurate, because number of steps taken varies according to time of days, yet we would expect it to be pretty consistent across days.)
-
+If a missing value is found, fill in mean for that 5-minute interval. (Expect this to be the reasonably accurate, because number of steps taken varies according to time of day, yet we would expect it to be pretty consistent across days.)
 
 
 ### 3. New dataset with missing values filled in
@@ -129,7 +128,7 @@ new_steps_per_day <- tapply(newActivity$steps, newActivity$date, sum)
 hist(new_steps_per_day,breaks = 10,main="Steps taken per day", xlab="Steps per day")
 ```
 
-The shape of the histogram is similar, but because we have more days for which data exist, we have higher peaks.
+The shape of the histogram is similar, but because we have more days with data now, we have higher peaks.
 
 Mean:
 
@@ -146,6 +145,8 @@ median(new_steps_per_day,na.rm=TRUE)
 ```
 
 Because we have replaced missing values with means, the median has shifted a little bit and now coincides with the mean.
+
+-----------------------------------------
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
