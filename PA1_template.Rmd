@@ -146,8 +146,6 @@ median(new_steps_per_day,na.rm=TRUE)
 
 Because we have replaced missing values with means, the median has shifted a little bit and now coincides with the mean.
 
------------------------------------------
-
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
