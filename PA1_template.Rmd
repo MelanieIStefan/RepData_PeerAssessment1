@@ -28,14 +28,24 @@ As far as I can see at the moment, the data is already in a suitable format.
 
 For this part of the assignment, ignore the missing values.
 
-### 1. Make a histogram of the total number of steps taken each day
+### 1. Calculate the total number of steps taken per day
 
-```{r total_steps_day, dev="png"}
+```{r total_steps_day}
 steps_per_day <- tapply(activity$steps, activity$date, sum)
+head(steps_per_day)
+```
+
+### 2. If you do not understand the difference between a histogram and a barplot, research the difference between them. Make a histogram of the total number of steps taken each day
+
+A histogram is a barplot of frequencies. In our case, number of steps is shown on the x axis and frequencies (number of days on which a particular number of steps were taken) on the y axis.
+
+
+```{r total_steps_hist, dev="png"}
 hist(steps_per_day,breaks = 10,main="Steps taken per day", xlab="Steps per day")
 ```
 
-### 2. Calculate and report the mean and median total number of steps taken per day
+
+### 3. Calculate and report the mean and median total number of steps taken per day
 
 Mean:
 
@@ -49,7 +59,7 @@ Median:
 median(steps_per_day,na.rm=TRUE)
 ```
 
-
+ 
 ## What is the average daily activity pattern?
 
 ### 1. Time series plot
