@@ -78,10 +78,10 @@ plot(interval_steps,type='l',xlab='interval',main="Average steps per 5-min inter
 
 ```{r active_interval,results='hide'}
 maxSteps=max(interval_steps$steps)
-maxInt=interval_steps$interval[interval_steps$steps==maxSteps]
+    maxInt=interval_steps$interval[interval_steps$steps==maxSteps]
 ```
 
-The most active 5-minute-interval is `r maxInt`, with an average of `r maxSteps` steps taken.
+The most active 5-minute-interval is `r maxInt`, with an average of `r round(maxSteps,2)` steps taken.
 
 ## Imputing missing values
 *Note that there are a number of days/intervals where there are missing values (coded as NA). The presence of missing days may introduce bias into some calculations or summaries of the data.*
