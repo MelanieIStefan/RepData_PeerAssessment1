@@ -30,17 +30,33 @@ As far as I can see at the moment, the data is already in a suitable format.
 
 For this part of the assignment, ignore the missing values.
 
-### 1. Make a histogram of the total number of steps taken each day
+### 1. Calculate the total number of steps taken per day
 
 
 ```r
 steps_per_day <- tapply(activity$steps, activity$date, sum)
+head(steps_per_day)
+```
+
+```
+## 2012-10-01 2012-10-02 2012-10-03 2012-10-04 2012-10-05 2012-10-06 
+##         NA        126      11352      12116      13294      15420
+```
+
+### 2. If you do not understand the difference between a histogram and a barplot, research the difference between them. Make a histogram of the total number of steps taken each day
+
+A histogram is a barplot of frequencies. In our case, number of steps is shown on the x axis and frequencies (number of days on which a particular number of steps were taken) on the y axis.
+
+
+
+```r
 hist(steps_per_day,breaks = 10,main="Steps taken per day", xlab="Steps per day")
 ```
 
-![](./PA1_template_files/figure-html/total_steps_day-1.png) 
+![](PA1_template_files/figure-html/total_steps_hist-1.png) 
 
-### 2. Calculate and report the mean and median total number of steps taken per day
+
+### 3. Calculate and report the mean and median total number of steps taken per day
 
 Mean:
 
@@ -64,7 +80,7 @@ median(steps_per_day,na.rm=TRUE)
 ## [1] 10765
 ```
 
-
+ 
 ## What is the average daily activity pattern?
 
 ### 1. Time series plot
@@ -78,7 +94,7 @@ interval_steps <- aggregate(steps ~ interval, data=activity, FUN=mean, na.rm=TRU
 plot(interval_steps,type='l',xlab='interval',main="Average steps per 5-min interval throughout the day")
 ```
 
-![](./PA1_template_files/figure-html/time_series-1.png) 
+![](PA1_template_files/figure-html/time_series-1.png) 
 
 ### 2. Most active interval
 
@@ -87,10 +103,10 @@ plot(interval_steps,type='l',xlab='interval',main="Average steps per 5-min inter
 
 ```r
 maxSteps=max(interval_steps$steps)
-maxInt=interval_steps$interval[interval_steps$steps==maxSteps]
+    maxInt=interval_steps$interval[interval_steps$steps==maxSteps]
 ```
 
-The most active 5-minute-interval is 835, with an average of 206.1698113 steps taken.
+The most active 5-minute-interval is 835, with an average of 206.17 steps taken.
 
 ## Imputing missing values
 *Note that there are a number of days/intervals where there are missing values (coded as NA). The presence of missing days may introduce bias into some calculations or summaries of the data.*
@@ -111,8 +127,7 @@ sum(is.na(activity$steps))
 ### 2. Missing values strategy 
 *Devise a strategy for filling in all of the missing values in the dataset.*
 
-If a missing value is found, fill in mean for that 5-minute interval. (Expect this to be the reasonably accurate, because number of steps taken varies according to time of days, yet we would expect it to be pretty consistent across days.)
-
+If a missing value is found, fill in mean for that 5-minute interval. (Expect this to be the reasonably accurate, because number of steps taken varies according to time of day, yet we would expect it to be pretty consistent across days.)
 
 
 ### 3. New dataset with missing values filled in
@@ -129,7 +144,12 @@ for (i in 1:nrow(activity))
         newActivity$steps[i] <- interval_steps$steps[interval_steps$interval==naInterval]            
     }
 }
-# test that this went to plan. 
+```
+
+Test that this went to plan by examining the new dataset and counting the number of missing values (should be zero).
+
+
+```r
 head(newActivity)
 ```
 
@@ -144,7 +164,6 @@ head(newActivity)
 ```
 
 ```r
-# There should be no more missing values in the new dataset
 sum(is.na(newActivity$steps))
 ```
 
@@ -161,9 +180,9 @@ new_steps_per_day <- tapply(newActivity$steps, newActivity$date, sum)
 hist(new_steps_per_day,breaks = 10,main="Steps taken per day", xlab="Steps per day")
 ```
 
-![](./PA1_template_files/figure-html/new_total_steps_day-1.png) 
+![](PA1_template_files/figure-html/new_total_steps_day-1.png) 
 
-The shape of the histogram is similar, but because we have more days for which data exist, we have higher peaks.
+The shape of the histogram is similar, but because we have more days with data now, we have higher peaks.
 
 Mean:
 
@@ -203,12 +222,12 @@ Because we have replaced missing values with means, the median has shifted a lit
 
 ```r
 weekend = c('Saturday','Sunday')
-newActivity$day <- ifelse(weekdays(as.POSIXct(newActivity$date)) %in% weekend, "weekend", "weekday")
+newActivity$daytype <- ifelse(weekdays(as.POSIXct(newActivity$date)) %in% weekend, "weekend", "weekday")
 head(newActivity)                                                                              
 ```
 
 ```
-##       steps       date interval     day
+##       steps       date interval daytype
 ## 1 1.7169811 2012-10-01        0 weekday
 ## 2 0.3396226 2012-10-01        5 weekday
 ## 3 0.1320755 2012-10-01       10 weekday
@@ -222,7 +241,7 @@ newActivity[1800:1806,]
 ```
 
 ```
-##      steps       date interval     day
+##      steps       date interval daytype
 ## 1800     0 2012-10-07      555 weekend
 ## 1801     0 2012-10-07      600 weekend
 ## 1802     0 2012-10-07      605 weekend
@@ -239,12 +258,12 @@ newActivity[1800:1806,]
 
 
 ```r
-new_interval_steps <- aggregate(steps ~ interval + day, data=newActivity, FUN=mean, na.rm=TRUE)
+new_interval_steps <- aggregate(steps ~ interval + daytype, data=newActivity, FUN=mean, na.rm=TRUE)
 library(lattice)
-xyplot(steps~interval|day,data=new_interval_steps,type='l',xlab='interval',main="Average steps per 5-min interval weekdays/weekend",layout=c(1,2))
+xyplot(steps~interval|daytype,data=new_interval_steps,type='l',xlab='interval',main="Average steps per 5-min interval weekdays/weekend",layout=c(1,2))
 ```
 
-![](./PA1_template_files/figure-html/panel_plot-1.png) 
+![](PA1_template_files/figure-html/panel_plot-1.png) 
 
 On weekdays, there is a noticeable peak in the morning (presumably when the person goes to work). On weekends, walking activity is more evenly distributed throughout the day (and starts a little later).
 
